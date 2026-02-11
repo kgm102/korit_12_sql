@@ -105,25 +105,6 @@ SELECT *
 	LEFT JOIN orders o ON u.id = o.user_id
 	WHERE o.id IS NULL;
 	 
-SELECT u.id, u.username, u.phone, o.id, s.product_id
-	FROM users u
-	LEFT JOIN orders o ON u.id = o.user_id
-	INNER JOIN orderdetails s ON u.id = s.product_id;
-	
-SELECT u.id, u.username, u.phone, o.id, od.product_id
-	FROM users u LEFT JOIN orders o ON u.id = o.user_id
-	INNER JOIN orderdetails od ON o.id = od.order_id;
-	
-SELECT *
-	FROM users u RIGHT JOIN orders o
-	ON u.id = o.user_id
-	ORDER BY o.id
-	; 
-	
-SELECT *
-	FROM users u JOIN orders o
-	ON u.id = o.user_id
-	ORDER BY o.id
-	; 
+
 	 
 	
