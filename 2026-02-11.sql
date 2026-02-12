@@ -108,20 +108,24 @@ SELECT *
 		join
 		(SELECT * FROM orderdetails WHERE quantity >= 50) od
 		ON  o.id = od.order_id;
-
+-- 1번
 SELECT * FROM products;
 SELECT NAME, ROUND((price-discount_price) / price * 100,3) AS ratioPerMaxPrc
 	FROM products
 	ORDER BY ratioPerMaxPrc DESC;
+	
+SELECT *, ROUND(discount_price / (SELECT MAX(discount_price) 
+	FROM products), 3) AS ratioPerMaxPrc FROM products;
 -- 서브쿼리는 우선 없이 해본다음 해본다
 SELECT * FROM users;
 SELECT * FROM staff;
 
 -- 2번 
-SELECT u.id AS 회원아이디 , u.phone AS 연락처 , s.id AS 직원아이디, s.last_name AS 성 , s.first_name AS 이름
+SELECT u.id AS 회원아이디 , u.phone AS 연락처 
+,s.id AS 직원아이디, s.last_name AS 성 , s.first_name AS 이름, s.birth_date
 	FROM users u
 	JOIN staff s ON u.id = s.user_id
-	WHERE country = 'Korea' OR country = 'Italy' and s.birth_date < '1990-01-01';
+	WHERE (country = 'Korea' OR country = 'Italy') and s.birth_date < '1990-01-01';
 	
 SELECT u.회원아이디, u.연락처, s.직원아이디, s.성, s.이름
 FROM (
@@ -134,7 +138,8 @@ JOIN (
     FROM staff
     WHERE birth_date < '1990-01-01'
 ) s ON u.회원아이디 = s.user_id;
--- 3번	
+-- 3번
+	
 SELECT country, COUNT(id) AS 국가별_회원_수
 	FROM users
 	GROUP BY country
@@ -155,10 +160,16 @@ SELECT *
 	FROM products
 	WHERE price = (SELECT min(price) FROM products);
 
-SELECT * FROM users;
-SELECT * FROM orders;
+-- 5번 
 SELECT *
 	FROM orders o
 	JOIN users u ON u.id = o.user_id
 	WHERE  order_date BETWEEN '2016-01-01' AND '2016-12-31';
+	
+SELECT *
+	FROM (
+    SELECT * FROM orders 
+    WHERE order_date BETWEEN '2016-01-01' AND '2016-12-31'
+	) o
+	JOIN users u ON u.id = o.user_id;
 	
